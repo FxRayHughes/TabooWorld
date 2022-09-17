@@ -70,7 +70,12 @@ object Command {
             execute<CommandSender> { sender, context, argument ->
                 sender.info("开始创建 &f${context.argument(0)}")
                 submit(async = true) {
-                    TabooWorld.api.createWorld(WorldCreator(context.argument(0)))
+                    try {
+                        TabooWorld.api.createWorld(WorldCreator(context.argument(0)))
+                    } catch (_: Exception) {
+                        sender.error("创建失败")
+                        return@submit
+                    }
                     sender.info("&f${context.argument(0)} &7创建完成")
                 }
             }
